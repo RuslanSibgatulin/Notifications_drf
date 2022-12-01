@@ -1,0 +1,10 @@
+# Postgres, Django
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=notice
+POSTGRES_PASSWORD=123qwe
+POSTGRES_DB=notice_database
+
+#Django params
+DEBUG=False
+SECRET_KEY=django-insecure-ptgmgr%5+!i_0gdfjk58)p=y*@7l%ekv88pj%oj5$)=!darmqs
