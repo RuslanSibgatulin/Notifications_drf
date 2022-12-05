@@ -1,6 +1,12 @@
-from .models import Client, Mailing
-from .serializers import ClientSerializer, MailingSerializer
 from rest_framework import generics
+
+from .models import Client, Mailing, Tag
+from .serializers import ClientSerializer, MailingSerializer, TagSerializer
+
+
+class TagList(generics.ListCreateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class ClientList(generics.ListCreateAPIView):

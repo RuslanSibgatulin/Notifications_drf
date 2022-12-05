@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ClientDetail, ClientList, MailingDetail, MailingList
+from .views import ClientDetail, ClientList, MailingDetail, MailingList, TagList
 
 app_name = 'notice_api'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('clients/<uuid:pk>/', ClientDetail.as_view()),
     path('mailings/', MailingList.as_view()),
     path('mailings/<uuid:pk>/', MailingDetail.as_view()),
+    path('tags/', TagList.as_view()),
 ]

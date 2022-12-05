@@ -1,12 +1,17 @@
 from django.contrib import admin
 
-from .models import Client, Mailing, Message
+from .models import Client, Mailing, Message, Tag
+
+
+@admin.register(Tag)
+class NoticeTagAdmin(admin.ModelAdmin):
+    list_display = ('name', )
 
 
 @admin.register(Client)
 class NoticeClientAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('phone', 'tag', 'tz')
+    list_display = ('phone', 'tz')
 
     # Поиск по полям
     search_fields = ('phone', )
@@ -18,7 +23,7 @@ class NoticeClientAdmin(admin.ModelAdmin):
 @admin.register(Mailing)
 class NoticeMailingAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('msg', 'tag')
+    list_display = ('msg', 'start_at', 'stop_at')
 
     # Поиск по полям
     search_fields = ('msg', 'tag')

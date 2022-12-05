@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Client, Mailing
+from .models import Client, Mailing, Tag
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name']
 
 
 class ClientSerializer(serializers.ModelSerializer):

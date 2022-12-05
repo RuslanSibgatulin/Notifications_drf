@@ -19,11 +19,18 @@ class UUIDMixin(models.Model):
         abstract = True
 
 
+class Tag(models.Model):
+    name = models.CharField(_('tag name'), max_length=50)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+
+
 class Mailing(UUIDMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     start_at = models.DateTimeField(_('start'))
     msg = models.CharField(_('message'), max_length=160)
-    tag = models.CharField(_('tag'), max_length=200, blank=True)
+    tag = models.ManyToManyField(Tag)
     stop_at = models.DateTimeField(_('stop'))
 
     class Meta:
@@ -47,9 +54,10 @@ class Client(UUIDMixin):
         _('provider code'),
         validators=[MinValueValidator(900), MaxValueValidator(999)]
     )
-    tag = models.CharField(_('tag'), max_length=200, blank=True)
+    tag = models.ManyToManyField(Tag)
     tz = models.IntegerField(
         _('client time zone'),
+        default=3,
         validators=[MinValueValidator(-10), MaxValueValidator(14)]
     )
 
