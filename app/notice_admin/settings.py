@@ -1,13 +1,15 @@
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +21,7 @@ INSTALLED_APPS = [
     'notice',
     'rest_framework',
     'drf_yasg',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
@@ -54,10 +57,10 @@ WSGI_APPLICATION = 'notice_admin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
+        'NAME': os.environ.get('POSTGRES_DB', 'notice_database'),
+        'USER': os.environ.get('POSTGRES_USER', 'notice'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '123qwe'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGRES_PORT', 5432),
         'OPTIONS': {
             # Нужно явно указать схемы, с которыми будет работать приложение.
@@ -94,5 +97,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
+}
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
+CELERY_BEAT_SCHEDULE = {
+    "send_sms_tasks": {
+        "task": "notice.tasks.send_notice",
+        "schedule": crontab(minute="*/1"),
+    },
 }

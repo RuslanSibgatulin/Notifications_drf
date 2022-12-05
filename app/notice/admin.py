@@ -18,10 +18,10 @@ class NoticeClientAdmin(admin.ModelAdmin):
 @admin.register(Mailing)
 class NoticeMailingAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('start_at', 'stop_at', 'tag')
+    list_display = ('msg', 'tag')
 
     # Поиск по полям
-    search_fields = ('message', 'tag')
+    search_fields = ('msg', 'tag')
 
     # Фильтрация в списке
     list_filter = ('start_at', 'stop_at')
