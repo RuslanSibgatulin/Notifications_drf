@@ -105,8 +105,8 @@ REST_FRAMEWORK = {
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/1"
 CELERY_BEAT_SCHEDULE = {
-    "send_sms_tasks": {
-        "task": "notice.tasks.send_notice",
+    "send_notices": {
+        "task": "notice.tasks.send_notices",
         "schedule": crontab(minute="*/1"),
     },
 }

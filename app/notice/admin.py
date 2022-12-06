@@ -35,7 +35,10 @@ class NoticeMailingAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class NoticeMessageAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    # list_display = (...)
+    list_display = ('created_at', 'client_id', 'status')
 
     # Поиск по полям
-    search_fields = ('id', 'name', 'description', )
+    search_fields = ('status', )
+
+    # Поиск по полям
+    search_fields = ('client_id', )

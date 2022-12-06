@@ -7,3 +7,4 @@ django-timezone-field==5.0
 drf-yasg==1.21.4
 django-phonenumber-field[phonenumbers]
 redis==4.4.0
+pydantic==1.10.2

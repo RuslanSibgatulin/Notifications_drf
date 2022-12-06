@@ -22,5 +22,8 @@ migrate:  ## Apply database changes
 su:
 		python app/manage.py createsuperuser
 
-celery:
+worker:
 		cd app && celery -A notice_admin worker --loglevel=INFO
+
+beat:
+		cd app && celery -A notice_admin beat --loglevel=INFO

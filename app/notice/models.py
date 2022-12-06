@@ -7,9 +7,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class MsgStatus(models.TextChoices):
+    CREATED = 'created'
     SUCCESS = 'sended'
     ERROR = 'error'
-    CANCELED = 'canceled'
+    CANCELED = 'cancelled'
 
 
 class UUIDMixin(models.Model):
@@ -27,7 +28,6 @@ class Tag(models.Model):
 
 
 class Mailing(UUIDMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     start_at = models.DateTimeField(_('start'))
     msg = models.CharField(_('message'), max_length=160)
     tag = models.ManyToManyField(Tag)
@@ -39,11 +39,10 @@ class Mailing(UUIDMixin):
         verbose_name_plural = _('Mailings')
 
     def __str__(self) -> str:
-        return f"{self.id} {self.msg} [{self.start_at}-{self.stop_at}]"
+        return f"{self.msg} [{self.start_at}]"
 
 
 class Client(UUIDMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone = PhoneNumberField(
         _('phone'),
         region='RU',
@@ -55,10 +54,10 @@ class Client(UUIDMixin):
         validators=[MinValueValidator(900), MaxValueValidator(999)]
     )
     tag = models.ManyToManyField(Tag)
-    tz = models.IntegerField(
+    tz = models.CharField(
         _('client time zone'),
-        default=3,
-        validators=[MinValueValidator(-10), MaxValueValidator(14)]
+        max_length=50,
+        default='UTC+03:00'
     )
 
     class Meta:
@@ -67,25 +66,25 @@ class Client(UUIDMixin):
         verbose_name_plural = _('Clients')
 
     def __str__(self) -> str:
-        return f"{self.id} {self.phone} [{self.tz}]"
+        return f"{self.phone} [{self.tz}]"
 
 
-class Message(UUIDMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(_('created'))
+class Message(models.Model):
+    created_at = models.DateTimeField(_('created'), auto_now_add=True)
     mailing = models.ForeignKey(
         Mailing,
         on_delete=models.PROTECT,
         verbose_name=_('mailing'),
     )
-    cliend = models.ForeignKey(
+    client = models.ForeignKey(
         Client,
         on_delete=models.PROTECT,
         verbose_name=_('client'),
     )
     status = models.CharField(
         _('status'), max_length=50,
-        choices=MsgStatus.choices
+        choices=MsgStatus.choices,
+        default=MsgStatus.CREATED
     )
 
     class Meta:
