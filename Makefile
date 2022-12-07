@@ -12,18 +12,9 @@ help:     ## Show this help.
 start:  ## Start project
 		cd docker && DOCKER_BUILDKIT=1 docker-compose $(compose_files) up -d --build --force-recreate
 
-runserver:
-		python app/manage.py runserver
+stop:
+		cd docker && DOCKER_BUILDKIT=1 docker-compose $(compose_files) down
 
-migrate:  ## Apply database changes
-		python app/manage.py makemigrations
-		python app/manage.py migrate
-
-su:
-		python app/manage.py createsuperuser
-
-worker:
-		cd app && celery -A notice_admin worker --loglevel=INFO
-
-beat:
-		cd app && celery -A notice_admin beat --loglevel=INFO
+init:  ## First and full initialization. Create database, superuser and collect static files
+		docker exec -it notice_django bash -c \
+		'python manage.py migrate && python manage.py createsuperuser --noinput && python manage.py collectstatic --noinput'
