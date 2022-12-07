@@ -18,3 +18,18 @@ class MailingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mailing
         fields = ['id', 'start_at', 'msg', 'tag', 'stop_at']
+
+
+class MailingStatsReportSerializer(serializers.Serializer):
+    mailing = serializers.UUIDField()
+    msg = serializers.StringRelatedField()
+    start_at = serializers.DateTimeField()
+    status = serializers.StringRelatedField()
+    count = serializers.IntegerField()
+
+
+class MailingDetailReportSerializer(serializers.Serializer):
+    client = serializers.UUIDField()
+    created_at = serializers.DateTimeField()
+    status = serializers.StringRelatedField()
+    client_tz = serializers.StringRelatedField()

@@ -1,7 +1,10 @@
 from rest_framework import generics
 
 from .models import Client, Mailing, Tag
-from .serializers import ClientSerializer, MailingSerializer, TagSerializer
+from .report import mailing_stats_report, mailing_detail_report
+from .serializers import (ClientSerializer, MailingDetailReportSerializer,
+                          MailingSerializer, MailingStatsReportSerializer,
+                          TagSerializer)
 
 
 class TagList(generics.ListCreateAPIView):
@@ -27,3 +30,15 @@ class MailingList(generics.ListCreateAPIView):
 class MailingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Mailing.objects.all()
     serializer_class = MailingSerializer
+
+
+class MailingStatsReportAPIView(generics.ListAPIView):
+    queryset = mailing_stats_report()
+    serializer_class = MailingStatsReportSerializer
+
+
+class MailingDetailReportAPIView(generics.ListAPIView):
+    serializer_class = MailingDetailReportSerializer
+
+    def get_queryset(self):
+        return mailing_detail_report(self.kwargs['pk'])
