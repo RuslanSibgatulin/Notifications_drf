@@ -8,12 +8,12 @@ from .serializers import (ClientSerializer, MailingDetailReportSerializer,
 
 
 class TagList(generics.ListCreateAPIView):
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.all().order_by("name")
     serializer_class = TagSerializer
 
 
 class ClientList(generics.ListCreateAPIView):
-    queryset = Client.objects.all()
+    queryset = Client.objects.all().order_by("provider_code")
     serializer_class = ClientSerializer
 
 
@@ -23,7 +23,7 @@ class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class MailingList(generics.ListCreateAPIView):
-    queryset = Mailing.objects.all()
+    queryset = Mailing.objects.all().order_by("start_at")
     serializer_class = MailingSerializer
 
 

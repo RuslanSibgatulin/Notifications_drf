@@ -1,7 +1,7 @@
 ## ----------------------------------------------------------------------
 ## Makefile is to manage Notice Admin.
 ## ----------------------------------------------------------------------
-include docker/envs/NoticeAdmin.env
+include docker/envs/NoticeAdmin_debug.env
 export
 
 compose_files=-f docker-compose.yml
@@ -18,3 +18,9 @@ stop:
 init:  ## First and full initialization. Create database, superuser and collect static files
 		docker exec -it notice_django bash -c \
 		'python manage.py migrate && python manage.py createsuperuser --noinput && python manage.py collectstatic --noinput'
+
+start-debug:
+		cd docker && DOCKER_BUILDKIT=1 docker-compose -f docker-compose-debug.yml up -d --build --force-recreate
+
+tests:
+		cd app && python manage.py test

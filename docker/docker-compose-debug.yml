@@ -1,0 +1,54 @@
+version: '3'
+
+volumes:
+  static:
+  notice_data:
+
+services:
+  postgres:
+    container_name: notice_postgres
+    image: postgres:14.1-alpine
+    env_file: envs/NoticeAdmin.env
+    volumes:
+      - notice_data/:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    
+  redis:
+    image: redis:7.0.0-alpine
+    ports:
+      - 6379:6379
+
+  backend:
+    container_name: notice_django
+    env_file: envs/NoticeAdmin.env
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/NoticeAdminDockerfile
+    volumes:
+      - static:/usr/src/app/static
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+
+  celery-beat:
+    container_name: notice_celery_beat
+    env_file: envs/NoticeAdmin.env
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/NoticeBeatDockerfile
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  celery-worker:
+    container_name: notice_celery_worker
+    env_file: envs/NoticeAdmin.env
+    build:
+      context: ..
+      dockerfile: docker/dockerfiles/NoticeWorkerDockerfile
+    depends_on:
+      - postgres
+    restart: unless-stopped
