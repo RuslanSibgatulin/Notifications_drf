@@ -27,15 +27,7 @@ jobs:
           
       - name: Run flake8
         run: |
-          flake8 app/ --show-source
-      
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: CI report
-          if-no-files-found: warn
-          retention-days: 0 
-          
+          flake8 app/ --show-source          
 
   send_message:
     runs-on: ubuntu-latest
