@@ -5,40 +5,40 @@ from .models import Client, Mailing, Message, Tag
 
 @admin.register(Tag)
 class NoticeTagAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ("name", )
 
 
 @admin.register(Client)
 class NoticeClientAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('phone', 'tz')
+    list_display = ("phone", "tz")
 
     # Поиск по полям
-    search_fields = ('phone', )
+    search_fields = ("phone", )
 
     # Фильтрация в списке
-    list_filter = ('tag', 'tz')
+    list_filter = ("tag", "tz")
 
 
 @admin.register(Mailing)
 class NoticeMailingAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('msg', 'start_at', 'stop_at')
+    list_display = ("msg", "start_at", "stop_at")
 
     # Поиск по полям
-    search_fields = ('msg', 'tag')
+    search_fields = ("msg", "tag")
 
     # Фильтрация в списке
-    list_filter = ('start_at', 'stop_at')
+    list_filter = ("start_at", "stop_at")
 
 
 @admin.register(Message)
 class NoticeMessageAdmin(admin.ModelAdmin):
     # Отображение полей в списке
-    list_display = ('created_at', 'client_id', 'status')
+    list_display = ("created_at", "client_id", "status")
 
     # Поиск по полям
-    search_fields = ('status', )
+    search_fields = ("status", )
 
     # Поиск по полям
-    search_fields = ('client_id', )
+    search_fields = ("client_id", )

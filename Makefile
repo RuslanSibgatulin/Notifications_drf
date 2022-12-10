@@ -24,3 +24,8 @@ start-debug:
 
 tests:
 		cd app && python manage.py test
+
+lint:
+		isort app/
+		flake8 app/ --show-source
+		mypy app/ --ignore-missing-imports --no-strict-optional --exclude /migrations/ --exclude /tests/

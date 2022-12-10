@@ -7,10 +7,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class MsgStatus(models.TextChoices):
-    CREATED = 'created'
-    SUCCESS = 'sended'
-    ERROR = 'error'
-    CANCELED = 'cancelled'
+    CREATED = "created"
+    SUCCESS = "sended"
+    ERROR = "error"
+    CANCELED = "cancelled"
 
 
 class UUIDMixin(models.Model):
@@ -21,22 +21,22 @@ class UUIDMixin(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(_('tag name'), max_length=50)
+    name = models.CharField(_("tag name"), max_length=50)
 
     def __str__(self) -> str:
         return f"{self.name}"
 
 
 class Mailing(UUIDMixin):
-    start_at = models.DateTimeField(_('start'))
-    msg = models.CharField(_('message'), max_length=160)
+    start_at = models.DateTimeField(_("start"))
+    msg = models.CharField(_("message"), max_length=160)
     tag = models.ManyToManyField(Tag)
-    stop_at = models.DateTimeField(_('stop'))
+    stop_at = models.DateTimeField(_("stop"))
 
     class Meta:
         db_table = "notice_mailing"
-        verbose_name = _('Mailing')
-        verbose_name_plural = _('Mailings')
+        verbose_name = _("Mailing")
+        verbose_name_plural = _("Mailings")
 
     def __str__(self) -> str:
         return f"{self.msg} [{self.start_at}]"
@@ -44,50 +44,51 @@ class Mailing(UUIDMixin):
 
 class Client(UUIDMixin):
     phone = PhoneNumberField(
-        _('phone'),
-        region='RU',
+        _("phone"),
+        region="RU",
         max_length=12,
         unique=True,
     )
     provider_code = models.IntegerField(
-        _('provider code'),
+        _("provider code"),
         validators=[MinValueValidator(900), MaxValueValidator(999)]
     )
     tag = models.ManyToManyField(Tag)
     tz = models.CharField(
-        _('client time zone'),
+        _("client time zone"),
         max_length=50,
-        default='UTC+03:00'
+        default="UTC+03:00"
     )
 
     class Meta:
         db_table = "notice_client"
-        verbose_name = _('Client')
-        verbose_name_plural = _('Clients')
+        verbose_name = _("Client")
+        verbose_name_plural = _("Clients")
 
     def __str__(self) -> str:
         return f"{self.phone} [{self.tz}]"
 
 
 class Message(models.Model):
-    created_at = models.DateTimeField(_('created'), auto_now_add=True)
+    created_at = models.DateTimeField(_("created"), auto_now_add=True)
     mailing = models.ForeignKey(
         Mailing,
         on_delete=models.PROTECT,
-        verbose_name=_('mailing'),
+        verbose_name=_("mailing"),
     )
     client = models.ForeignKey(
         Client,
         on_delete=models.PROTECT,
-        verbose_name=_('client'),
+        verbose_name=_("client"),
     )
     status = models.CharField(
-        _('status'), max_length=50,
+        _("status"),
+        max_length=50,
         choices=MsgStatus.choices,
         default=MsgStatus.CREATED
     )
 
     class Meta:
         db_table = "notice_message"
-        verbose_name = _('Message')
-        verbose_name_plural = _('Messages')
+        verbose_name = _("Message")
+        verbose_name_plural = _("Messages")

@@ -1,4 +1,5 @@
 # Notifications - сервис уведомлений.
+![CI Result](https://github.com/RuslanSibgatulin/Notifications_drf/actions/workflows/test.yml/badge.svg)
 
 Сервис управления рассылками, API администрирования и получения статистики. Метод отправки сообщений - сторонний СМС сервис.
 

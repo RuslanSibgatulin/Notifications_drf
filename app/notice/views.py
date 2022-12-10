@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from .models import Client, Mailing, Tag
-from .report import mailing_stats_report, mailing_detail_report
+from .report import mailing_detail_report, mailing_stats_report
 from .serializers import (ClientSerializer, MailingDetailReportSerializer,
                           MailingSerializer, MailingStatsReportSerializer,
                           TagSerializer)
@@ -41,4 +41,4 @@ class MailingDetailReportAPIView(generics.ListAPIView):
     serializer_class = MailingDetailReportSerializer
 
     def get_queryset(self):
-        return mailing_detail_report(self.kwargs['pk'])
+        return mailing_detail_report(self.kwargs["pk"])
