@@ -1,7 +1,7 @@
 ## ----------------------------------------------------------------------
 ## Makefile is to manage Notice Admin.
 ## ----------------------------------------------------------------------
-include docker/envs/NoticeAdmin_debug.env
+include docker/envs/NoticeAdmin.env
 export
 
 compose_files=-f docker-compose.yml
@@ -19,12 +19,11 @@ init:  ## First and full initialization. Create database, superuser and collect 
 		docker exec -it notice_django bash -c \
 		'python manage.py migrate && python manage.py createsuperuser --noinput && python manage.py collectstatic --noinput'
 
-start-debug:
-		cd docker && DOCKER_BUILDKIT=1 docker-compose -f docker-compose-debug.yml up -d --build --force-recreate
+ci-tests:
+		cd app && python manage.py test --settings=notice_admin.settings.ci
 
-tests:
-		cd app && python manage.py test
-
+lint-install:
+		pip install lxml mypy wemake-python-styleguide flake8-html types-requests
 lint:
 		isort app/
 		flake8 app/ --show-source

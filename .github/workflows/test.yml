@@ -21,13 +21,18 @@ jobs:
       - name: Install MyPy & flake8
         run: |
           pip3 install lxml mypy wemake-python-styleguide flake8-html types-requests
+          pip3 install -r requirements.txt
       - name: Run mypy
         run: |
           mypy app/ --ignore-missing-imports --no-strict-optional --exclude /migrations/ --exclude /tests/
           
       - name: Run flake8
         run: |
-          flake8 app/ --show-source          
+          flake8 app/ --show-source
+      
+      - name: Run app tests
+        run: |
+          cd app && python manage.py test --settings=notice_admin.settings.ci
 
   send_message:
     runs-on: ubuntu-latest
