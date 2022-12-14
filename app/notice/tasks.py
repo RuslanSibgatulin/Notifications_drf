@@ -5,6 +5,7 @@ from typing import Generator, List
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
+from django.conf import settings
 from django.db import connection
 from notice.models import Client, Mailing, Message, MsgStatus
 from pydantic import BaseModel, SecretStr
@@ -42,8 +43,8 @@ def get_current_recipients(since: datetime = None) -> Generator[List[Task], None
         JOIN notice_client_tag nct ON nct.tag_id = nmt.tag_id
         JOIN notice_client nc ON nct.client_id = nc.id
         ) ct
-        WHERE ct.start_client BETWEEN "{0}" AND "{0}"::timestamp + interval "1 minute"
-    """.format(st)
+        WHERE ct.start_client BETWEEN "{0}" AND "{0}"::timestamp + interval "{} minute"
+    """.format(st, settings.CELERY_SCHEDULE_INTERVAL)
     with connection.cursor() as cursor:
         cursor.execute(query)
         columns = [col[0] for col in cursor.description]
