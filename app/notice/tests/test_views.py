@@ -1,6 +1,5 @@
 import random
 from datetime import timedelta
-from re import findall
 
 from django.test import TestCase
 from faker import Faker
@@ -9,7 +8,6 @@ from pytz import utc
 
 
 class ClientsAPIViewTest(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         faker = Faker("ru_RU")
@@ -22,10 +20,11 @@ class ClientsAPIViewTest(TestCase):
         # Create clients
         for _ in range(30):
             code = random.choice(providers_code)
-            phone_number = "".join(findall("\\d+", faker.phone_number()))[-7:]
+            base_number = "{:07d}".format(random.randrange(1, 9999999))
+            phone_number = f"+7{code}{base_number}"
             tzone = random.randint(0, 5)
             client = Client.objects.create(
-                phone=f"+7{code}{phone_number}",
+                phone=phone_number,
                 provider_code=code,
                 tz=f"UTC+0{tzone}:00"
             )

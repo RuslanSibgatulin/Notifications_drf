@@ -8,3 +8,4 @@ django-phonenumber-field[phonenumbers]
 redis==4.4.0
 pydantic==1.10.2
 Faker==15.3.4
+django-split-settings==1.1.0

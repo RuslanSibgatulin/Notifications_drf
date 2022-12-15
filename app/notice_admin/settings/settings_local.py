@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-from celery.schedules import crontab
 from split_settings.tools import include
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,16 +30,11 @@ WSGI_APPLICATION = "notice_admin.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB", "notice_database"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTGRES_PORT", 5432),
-        "OPTIONS": {
-            # Нужно явно указать схемы, с которыми будет работать приложение.
-            "options": "-c search_path=public,content"
-        },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "notice_database.sqlite",
+        "TEST": {
+            "NAME": BASE_DIR / "test_notice_database.sqlite",
+        }
     }
 }
 
@@ -59,16 +53,6 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 100,
-}
-
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379/1")
-CELERY_SCHEDULE_INTERVAL = int(os.environ.get("CELERY_SCHEDULE_INTERVAL", 1))
-CELERY_BEAT_SCHEDULE = {
-    "send_notices": {
-        "task": "notice.tasks.scheduled_notices",
-        "schedule": crontab(minute=f"*/{CELERY_SCHEDULE_INTERVAL}"),
-    },
 }
 
 include(

@@ -14,9 +14,9 @@ CELERY_SCHEDULE_INTERVAL=1
 
 #Django params
 DEBUG=False
-SECRET_KEY=secret-secret
+SECRET_KEY=
 
 #Sender params
 SMS_SERVICE=https://probe.fbrq.cloud/v1/send
-SMS_SERVICE_TOKEN=secret-token
+SMS_SERVICE_TOKEN=
 
