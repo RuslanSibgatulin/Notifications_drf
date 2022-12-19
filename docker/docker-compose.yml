@@ -35,6 +35,7 @@ services:
       dockerfile: docker/dockerfiles/NoticeBeatDockerfile
     depends_on:
       - postgres
+      - redis
     restart: unless-stopped
 
   celery-worker:
@@ -45,6 +46,7 @@ services:
       dockerfile: docker/dockerfiles/NoticeWorkerDockerfile
     depends_on:
       - postgres
+      - redis
     restart: unless-stopped
 
   nginx:

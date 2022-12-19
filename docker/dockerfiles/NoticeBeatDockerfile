@@ -5,4 +5,4 @@ COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./app .
 
-CMD [ "celery", "-A", "notice_admin", "worker", "--loglevel=INFO" ]
+CMD [ "celery", "-A", "notice_admin", "beat", "--loglevel=INFO" ]

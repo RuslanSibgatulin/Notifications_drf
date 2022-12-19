@@ -12,6 +12,17 @@ jobs:
     strategy:
       matrix:
         version: [3.8, 3.9, '3.10']
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+        
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python3.(8/9/10)
@@ -20,7 +31,7 @@ jobs:
           python-version: ${{ matrix.version }}
       - name: Install MyPy & flake8
         run: |
-          pip3 install lxml mypy wemake-python-styleguide flake8-html types-requests
+          pip3 install lxml mypy wemake-python-styleguide flake8-html types-requests types-pytz
       - name: Install app dependencies
         run: |
           pip3 install $(grep -v '^ *#\|^uwsgi' requirements.txt | grep .)
@@ -34,7 +45,11 @@ jobs:
       
       - name: Run app tests
         run: |
-          cd app && python manage.py test --settings=notice_admin.settings.ci
+          cd app && python manage.py test --settings=notice_admin.settings.settings_local
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          CELERY_BROKER_URL: redis://localhost:6379/0
+          CELERY_RESULT_BACKEND: redis://localhost:6379/1
 
   send_message:
     runs-on: ubuntu-latest

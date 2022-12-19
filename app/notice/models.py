@@ -10,7 +10,7 @@ class MsgStatus(models.TextChoices):
     CREATED = "created"
     SUCCESS = "sended"
     ERROR = "error"
-    CANCELED = "cancelled"
+    CANCELLED = "cancelled"
 
 
 class UUIDMixin(models.Model):
