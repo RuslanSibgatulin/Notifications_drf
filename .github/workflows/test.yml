@@ -34,7 +34,7 @@ jobs:
       
       - name: Run app tests
         run: |
-          cd app && python manage.py test --settings=notice_admin.settings.ci
+          cd app && python manage.py test --settings=notice_admin.settings.settings_local
 
   send_message:
     runs-on: ubuntu-latest
