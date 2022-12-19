@@ -44,8 +44,8 @@ jobs:
         run: |
           cd app && python manage.py test --settings=notice_admin.settings.settings_local
         env:
-          REDIS_HOST: redis
-          REDIS_PORT: 6379
+          CELERY_BROKER_URL: redis://redis:6379/0
+          CELERY_RESULT_BACKEND: redis://redis:6379/1
 
   send_message:
     runs-on: ubuntu-latest
