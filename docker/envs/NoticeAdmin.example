@@ -10,13 +10,10 @@ DJANGO_SUPERUSER_EMAIL=admin@localhost
 DJANGO_DEBUG=False
 DJANGO_SECRET_KEY=
 
-
 CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_RESULT_BACKEND=redis://redis:6379/1
 CELERY_SCHEDULE_INTERVAL=1
 
-
 #Sender params
 SMS_SERVICE=https://probe.fbrq.cloud/v1/send
 SMS_SERVICE_TOKEN=
-
