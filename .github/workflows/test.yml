@@ -20,7 +20,7 @@ jobs:
           python-version: ${{ matrix.version }}
       - name: Install MyPy & flake8
         run: |
-          pip3 install lxml mypy wemake-python-styleguide flake8-html types-requests
+          pip3 install lxml mypy wemake-python-styleguide flake8-html types-requests types-pytz
       - name: Install app dependencies
         run: |
           pip3 install $(grep -v '^ *#\|^uwsgi' requirements.txt | grep .)

@@ -3,11 +3,11 @@ from typing import Generator
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
-from db.models import Task
-from db.pg_utils import pgTasks
 from django.conf import settings
+from notice.db.models import Task
+from notice.db.pg_utils import pgTasks
 from notice.models import Client, Mailing, Message, MsgStatus
-from senders.sms_sender import SMSender, SMSMessage
+from notice.senders.sms_sender import SMSender, SMSMessage
 
 logger = get_task_logger(__name__)
 tasks_storage = pgTasks()

@@ -24,15 +24,15 @@ class pgTasks:
         (
             SELECT
                 nm.id mailing_id, nm.msg, nc.phone, nc.id client_id,
-                datetime(nm.start_at, substr(nc.tz, 4, 6)) start_client,
-                datetime(nm.stop_at, substr(nc.tz, 4, 6)) stop_client
+                nm.start_at AT TIME ZONE nc.tz start_client,
+                nm.stop_at AT TIME ZONE nc.tz stop_client
             FROM notice_mailing nm
             JOIN notice_mailing_tag nmt ON nmt.mailing_id = nm.id
             JOIN notice_client_tag nct ON nct.tag_id = nmt.tag_id
             JOIN notice_client nc ON nct.client_id = nc.id
-            WHERE mailing_id={0}
+            WHERE mailing_id='{0}'
         ) ct
-        WHERE ct.start_client >= datetime('now') AND ct.stop_client > datetime('now')
+        WHERE ct.stop_client > NOW() AT TIME ZONE 'UTC' AND ct.start_client < NOW() AT TIME ZONE 'UTC'
         """.format(mailing_id)
 
         return self.exec_query(query)
@@ -52,7 +52,7 @@ class pgTasks:
             JOIN notice_client_tag nct ON nct.tag_id = nmt.tag_id
             JOIN notice_client nc ON nct.client_id = nc.id
             ) ct
-            WHERE ct.start_client BETWEEN "{0}" AND "{0}"::timestamp + interval "{1} minute"
+            WHERE ct.start_client BETWEEN '{0}' AND '{0}'::timestamp + interval '{1} minute'
         """.format(st, interval)
 
         return self.exec_query(query)

@@ -1,28 +1,29 @@
+import os
+
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s] %(levelname)s [%(module)s.%(name)s] - %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
         }
     },
-    'formatters': {
-        'default': {
-            'format': '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose"
         },
     },
-    'handlers': {
-        'debug-console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'default',
-            'filters': ['require_debug_true'],
-        },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['debug-console'],
-            'propagate': False,
-        }
+    "loggers": {
+        "notice": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
     },
 }

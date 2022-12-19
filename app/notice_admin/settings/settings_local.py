@@ -5,9 +5,9 @@ from split_settings.tools import include
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-DEBUG = False
+DEBUG = os.environ.get("DJANGO_DEBUG", False) == "True"
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
