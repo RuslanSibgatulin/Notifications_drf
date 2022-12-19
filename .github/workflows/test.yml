@@ -43,6 +43,9 @@ jobs:
       - name: Run app tests
         run: |
           cd app && python manage.py test --settings=notice_admin.settings.settings_local
+        env:
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
 
   send_message:
     runs-on: ubuntu-latest

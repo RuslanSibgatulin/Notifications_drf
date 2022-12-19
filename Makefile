@@ -29,7 +29,7 @@ worker-celery:
 		cd app && celery -A notice_admin worker --loglevel=INFO
 
 ci-tests:
-		cd app && python manage.py test --settings=notice_admin.settings.ci
+		cd app && python manage.py test --settings=notice_admin.settings.settings_local
 
 lint-install:
 		pip install lxml mypy wemake-python-styleguide flake8-html types-requests types-pytz
